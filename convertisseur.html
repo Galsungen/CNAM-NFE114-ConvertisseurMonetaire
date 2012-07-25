@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<!-- 
+  @author : Galsungen - http://blog.galsungen.net
+  Année 2010-11
+  CNAM - NFE114 - Système d'information web
+ -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Convertisseur de monnaies</title>
+<link rel="stylesheet" href="style2.css" type="text/css"></link>
+
+<script type="text/javascript">
+
+//déclaration tableau avec valeurs
+var valeurs = new Array();
+valeurs['Euro'] = new Array();
+valeurs['Euro']['nom'] = "Euro";
+valeurs['Euro']['symbole'] = "€";
+valeurs['Euro']['FR'] = "6.55957";
+valeurs['Euro']['Eng'] = "0.84644";
+valeurs['Euro']['USA'] = "1.32751";
+valeurs['Euro']['CAN'] = "1.33685";
+valeurs['Euro']['Chine'] = "8.82928";
+valeurs['Euro']['Japon'] = "109.708";
+valeurs['FR'] = new Array();
+valeurs['FR']['nom'] = "Franc";
+valeurs['FR']['symbole'] = "Fr";
+valeurs['FR']['Euro'] = "0.15245";
+valeurs['FR']['Eng'] = "0.12904";
+valeurs['FR']['USA'] = "0.20238";
+valeurs['FR']['CAN'] = "0.20380";
+valeurs['FR']['Chine'] = "1.34601";
+valeurs['FR']['Japon'] = "16.7249";
+valeurs['Eng'] = new Array();
+valeurs['Eng']['nom'] = "Livre Sterling";
+valeurs['Eng']['symbole'] = "£";
+valeurs['Eng']['Euro'] = "1.18135";
+valeurs['Eng']['FR'] = "7.74915";
+valeurs['Eng']['USA'] = "1.56846";
+valeurs['Eng']['CAN'] = "1.57919";
+valeurs['Eng']['Chine'] = "10.4324";
+valeurs['Eng']['Japon'] = "129.637";
+valeurs['USA'] = new Array();
+valeurs['USA']['nom'] = "Dollar";
+valeurs['USA']['symbole'] = "$";
+valeurs['USA']['Euro'] = "0.75339";
+valeurs['USA']['FR'] = "4.94191";
+valeurs['USA']['Eng'] = "0.63761";
+valeurs['USA']['CAN'] = "1.00703";
+valeurs['USA']['Chine'] = "6.65250";
+valeurs['USA']['Japon'] = "82.6255";
+valeurs['CAN'] = new Array();
+valeurs['CAN']['nom'] = "Dollar Canadien";
+valeurs['CAN']['symbole'] = "$";
+valeurs['CAN']['Euro'] = "0.74818";
+valeurs['CAN']['FR'] = "4.90774";
+valeurs['CAN']['Eng'] = "0.63336";
+valeurs['CAN']['USA'] = "0.99345";
+valeurs['CAN']['Chine'] = "6.60896";
+valeurs['CAN']['Japon'] = "82.1088";
+valeurs['Chine'] = new Array();
+valeurs['Chine']['nom'] = "Yuan";
+valeurs['Chine']['symbole'] = "¥";
+valeurs['Chine']['Euro'] = "0.11328";
+valeurs['Chine']['FR'] = "0.74307";
+valeurs['Chine']['Eng'] = "0.09587";
+valeurs['Chine']['USA'] = "0.15032";
+valeurs['Chine']['CAN'] = "0.15135";
+valeurs['Chine']['Japon'] = "12.4252";
+valeurs['Japon'] = new Array();
+valeurs['Japon']['nom'] = "Yen";
+valeurs['Japon']['symbole'] = "¥";
+valeurs['Japon']['Euro'] = "0.00911";
+valeurs['Japon']['FR'] = "0.05976";
+valeurs['Japon']['Eng'] = "0.00772";
+valeurs['Japon']['USA'] = "0.01210";
+valeurs['Japon']['CAN'] = "0.01218";
+valeurs['Japon']['Chine'] = "0.08048";
+
+//tableau pour inverser les noms de devis avec les références
+references = new Array()
+references['Euro'] = "Euro";
+references['Franc'] = "FR";
+references['Livre Sterling'] = "Eng";
+references['Dollar'] = "USA";
+references['Dollar Canadien'] = "CAN";
+references['Yuan'] = "Chine";
+references['Yen'] = "Japon";
+
+//afficher texte dans labels en fonction monnaies choisies
+function changer_champ(champ,ref){
+    document.getElementById(champ).innerHTML = valeurs[ref]['nom'];
+}
+
+//déclaration fonction qui calcul la consersion
+
+function convertir() {
+    de = document.getElementById('affiche_de').innerHTML;
+    vers = document.getElementById('affiche_vers').innerHTML;
+    combien = parseFloat(document.getElementById('de_valeur').innerHTML);
+    if (de !== vers) {
+        if (de != '') {
+            if (vers !='') {
+                if (combien != '') {
+                    taux=parseFloat(valeurs[references[de]][references[vers]]);
+                    document.getElementById('vers_valeur').innerHTML = combien*taux ;
+                }
+                else {
+                    document.getElementById('message').innerHTML = "Il faut saisir une valeur à convertir.";
+                }
+            }
+            else {
+                document.getElementById('message').innerHTML = "Il faut choisir une devise vers laquelle réaliser la conversion.";
+            }
+        }
+        else {
+            document.getElementById('message').innerHTML = "Il faut choisir la devise correspondante à la valeur à convertir.";
+        }
+    }
+    else {
+        document.getElementById('vers_valeur').innerHTML = combien;
+    }
+}
+
+//détection des doubles virgules : on en autorise qu'une
+//on en profite pour mettre un zéro devant si on attaque immédiatement par une virgule
+
+function virgule() {
+    averifier = document.getElementById('de_valeur').innerHTML;
+    if(averifier.indexOf('.', 0) != '-1') {
+        document.getElementById('message').innerHTML = 'Une seule virgule est autorisée.';
+    }
+    else {
+        if(averifier.length == 0) {
+            document.getElementById('de_valeur').innerHTML = '0.';        
+        }
+        else {
+            document.getElementById('de_valeur').innerHTML = averifier+'.';
+        }
+    }
+}
+
+</script>
+
+</head>
+
+<body>
+	<table class="une">
+		<tr>
+			<td colspan="6" class="titre">Convertisseur de devises</td>
+		</tr>
+		<tr>
+			<td colspan="3" class="devise">De : <span id="affiche_de"></span></td><td  colspan="3" class="devise">En : <span id="affiche_vers"></span></td>
+		</tr>
+		<tr>
+			<td colspan="3" id="de_valeur" class="affiche"></td><td colspan="3" id="vers_valeur" class="affiche"></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>7</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>8</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>9</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>4</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>5</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>6</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>1</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>2</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>3</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="bouton"  onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML += this.innerHTML;"
+			>0</td>
+			<td colspan="2" class="bouton" onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="virgule();"
+			>.</td>
+			<td colspan="2" class="bouton"  onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="document.getElementById('de_valeur').innerHTML = '';
+								document.getElementById('message').innerHTML = '';
+								document.getElementById('vers_valeur').innerHTML = '';"
+			>C</td>
+		</tr>
+		<tr>
+			<td colspan="6" class="bouton"   onmousedown="this.style.borderStyle='inset'; this.style.backgroundColor='#AAAAAA';"
+								onmouseup="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onmouseout="this.style.borderStyle='outset'; this.style.backgroundColor='#E0E0DA';"
+								onclick="convertir();"
+			>Convertir</td>
+		</tr>
+		<tr><td colspan="6" id="message" class="message"></td></tr>
+	</table>
+	
+	<table class="deux">
+	    <tr>
+			<td>De : <br />
+			    <img src="flags/European-Union.png" class="flag" alt="Drapeau Union Europ&eacute;enne" onclick="changer_champ('affiche_de','Euro');" /><br />
+			    <img src="flags/France.png" class="flag" alt="Drapeau France" onclick="changer_champ('affiche_de','FR');" /><br />
+			    <img src="flags/United-Kindom.png" class="flag" alt="Drapeau Union Britannique" onclick="changer_champ('affiche_de','Eng');" /><br />
+			    <img src="flags/United-States.png" class="flag" alt="Drapeau USA" onclick="changer_champ('affiche_de','USA');" /><br />
+			    <img src="flags/Canada.png" class="flag" alt="Drapeau Canada" onclick="changer_champ('affiche_de','CAN');" /><br />
+			    <img src="flags/China.png" class="flag" alt="Drapeau Chine" onclick="changer_champ('affiche_de','Chine');" /><br />
+			    <img src="flags/Japan.png" class="flag" alt="Drapeau Japon" onclick="changer_champ('affiche_de','Japon');" /><br />    
+			</td>
+			<td>Vers :  <br />
+			    <img src="flags/European-Union.png" class="flag" alt="Drapeau Union Europ&eacute;enne" onclick="changer_champ('affiche_vers','Euro');" /><br />
+			    <img src="flags/France.png" class="flag" alt="Drapeau France" onclick="changer_champ('affiche_vers','FR');" /><br />
+			    <img src="flags/United-Kindom.png" class="flag" alt="Drapeau Union Britannique" onclick="changer_champ('affiche_vers','Eng');" /><br />
+			    <img src="flags/United-States.png" class="flag" alt="Drapeau USA" onclick="changer_champ('affiche_vers','USA');" /><br />
+			    <img src="flags/Canada.png" class="flag" alt="Drapeau Canada" onclick="changer_champ('affiche_vers','CAN');" /><br />
+			    <img src="flags/China.png" class="flag" alt="Drapeau Chine" onclick="changer_champ('affiche_vers','Chine');" /><br />
+			    <img src="flags/Japan.png" class="flag" alt="Drapeau Japon" onclick="changer_champ('affiche_vers','Japon');" /><br />    
+			</td>			
+	    </tr>
+	</table>
+<hr />
+<p class="footer">
+	<a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="vcss-blue.gif" alt="CSS Valide !" /></a><a href="http://validator.w3.org/check?uri=referer"><img style="border:0;width:88px;height:31px" src="valid-xhtml10.png" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+</p>
+</body>
+</html>
