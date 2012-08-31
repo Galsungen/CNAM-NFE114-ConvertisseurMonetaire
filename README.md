@@ -12,7 +12,7 @@ a) Développez un convertisseur de devises entièrement fonctionnel, affiché da
 
 Afin de vous guider sur la forme à donner à votre convertisseur, voici une image à titre d'exemple :
 
-![image d'illustration de l'interface](https://github.com/Galsungen/CNAM-NFE114-ConvertisseurMonetaire/blob/master/convertisseur.jpg)
+![image d'illustration de l'interface](https://raw.github.com/Galsungen/CNAM-NFE114-ConvertisseurMonetaire/master/convertisseur.jpg)
 
 b) Faites évoluer votre convertisseur pour permettre le choix de plusieurs devises source et/ou destination.
 
